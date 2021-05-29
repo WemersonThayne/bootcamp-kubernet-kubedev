@@ -74,10 +74,14 @@ jobs:
               
       - name: Deploy API
         uses: Azure/k8s-deploy@v1.3
-        with: 
-            images: wemersont/api-produtos-kubedev-bootcamp:latest
-            manifests: |
-              ./k8s/api/deployment.yml
+#         with: 
+#             images: wemersont/api-produtos-kubedev-bootcamp:latest
+#                 - name: Deploy WebApi
+#         uses: Azure/k8s-deploy@v1.3
+        with:
+          images: fabricioveronez/api-bootcamp-produto:latest
+          manifests: |
+            k8s/api/deployment.yaml
     
     
     
