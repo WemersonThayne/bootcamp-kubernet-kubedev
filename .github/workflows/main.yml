@@ -48,7 +48,6 @@ jobs:
           push: true
           tags: 
               wemersont/api-produtos-kubedev-bootcamp:latest
-              wemersont/api-produtos-kubedev-bootcamp:${{github.run_number}}
               
   CD:
     # The type of runner that the job will run on
@@ -72,6 +71,12 @@ jobs:
             manifest:
               k8s/mongodb/deployment.yml
               k8s/mongodb/service.yml
+              
+      - name: Deploy API
+        uses: Azure/k8s-deploy@v1.3
+        with: 
+            manifest:
+              k8s/api/deployment.yml
     
     
     
