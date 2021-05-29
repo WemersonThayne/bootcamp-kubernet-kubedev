@@ -59,7 +59,7 @@ jobs:
       - uses: actions/checkout@v2
       
       - name: Kubernetes set context
-      - uses: Azure/k8s-set-context@v1.1
+        uses: Azure/k8s-set-context@v1.1
         with:
           # Acceptable values: kubeconfig or service-account or service-principal
           method: kubeconfig
@@ -67,7 +67,7 @@ jobs:
           kubeconfig: ${{secrets.K8S_CONFIG}}
           
       - name: Deploy MongoDB
-      - uses: Azure/k8s-deploy@v1.3
+        uses: Azure/k8s-deploy@v1.3
         with: 
             manifest:
               k8s/mongodb/deployment.yml
