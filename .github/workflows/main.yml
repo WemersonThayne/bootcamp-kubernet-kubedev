@@ -76,7 +76,7 @@ jobs:
         uses: Azure/k8s-deploy@v1.3
         with: 
             images: wemersont/api-produtos-kubedev-bootcamp:latest
-            manifest: |
+            manifests: |
               ./k8s/api/deployment.yml
     
     
