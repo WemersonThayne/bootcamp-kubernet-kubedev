@@ -16,7 +16,8 @@ spec:
       spec:
         containers:
           - name: api
-            image: wemersont/api-produtos-kubedev-bootcamp:latest
+            image: fabricioveronez/api-bootcamp-produto:latest
+            #image: wemersont/api-produtos-kubedev-bootcamp:latest
             ports:
               - containerPort: 8080
             env:
