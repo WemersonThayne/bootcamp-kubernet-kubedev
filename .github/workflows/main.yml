@@ -48,4 +48,4 @@ jobs:
           push: true
           tags: 
               wemersont/api-produtos-kubedev-bootcamp
-              wemersont/api-produtos-kubedev-bootcamp:${{github.run_number}}
+              #wemersont/api-produtos-kubedev-bootcamp:${{github.run_number}}
