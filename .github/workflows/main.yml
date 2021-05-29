@@ -16,7 +16,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build:
+  CI:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -24,13 +24,59 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+      
+      - name: Docker Login
+        # You may pin to the exact commit or the version.
+        # uses: docker/login-action@28218f9b04b4f3f62068d7b6ce6ca5b26e35336c
+        uses: docker/login-action@v1.9.0
+        with:
+          # Username used to log against the Docker registry
+          username: ${{secrets.DOCKER_USER}}
+          # Password or personal access token used to log against the Docker registry
+          password: ${{secrets.DOCKER_PWD}}
+          # Log out from the Docker registry at the end of a job
+        
+      - name: Build and push Docker images
+        # You may pin to the exact commit or the version.
+        # uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        uses: docker/build-push-action@v2.5.0
+        with:
+          # Build's context is the set of files located in the specified PATH or URL
+          context: ./src
+          # Path to the Dockerfile
+          file: ./src/Dockerfile
+          push: true
+          tags: 
+              wemersont/api-produtos-kubedev-bootcamp:latest
+              
+  CD:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    needs: [CI]
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      
+      - name: Kubernetes set context
+        uses: Azure/k8s-set-context@v1.1
+        with:
+          # Acceptable values: kubeconfig or service-account or service-principal
+          method: kubeconfig
+          # Kubernetes Config
+          kubeconfig: ${{secrets.K8S_CONFIG}}
+          
+      - name: Deploy MongoDB
+        uses: Azure/k8s-deploy@v1.3
+        with: 
+            manifest:
+              k8s/mongodb/deployment.yml
+              k8s/mongodb/service.yml
+              
+      - name: Deploy API
+        uses: Azure/k8s-deploy@v1.3
+        with: 
+            manifest:
+              k8s/api/deployment.yml
+    
+    
+    
