@@ -68,15 +68,20 @@ jobs:
       - name: Deploy MongoDB
         uses: Azure/k8s-deploy@v1.3
         with: 
-            manifest:
-              k8s/mongodb/deployment.yml
-              k8s/mongodb/service.yml
+            manifests: |
+              ./k8s/mongodb/deployment.yml
+              ./k8s/mongodb/service.yml
               
       - name: Deploy API
         uses: Azure/k8s-deploy@v1.3
-        with: 
-            manifest:
-              k8s/api/deployment.yml
+#         with: 
+#             images: wemersont/api-produtos-kubedev-bootcamp:latest
+#                 - name: Deploy WebApi
+#         uses: Azure/k8s-deploy@v1.3
+        with:
+          images: fabricioveronez/api-bootcamp-produto:latest
+          manifests: |
+            ./k8s/api/deployment.yml
     
     
     
